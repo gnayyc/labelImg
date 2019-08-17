@@ -1,3 +1,6 @@
+mass
+pneumonia
+pneumothorax
 dog
 person
 cat

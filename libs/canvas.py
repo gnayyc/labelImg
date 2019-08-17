@@ -61,6 +61,7 @@ class Canvas(QWidget):
         self.setMouseTracking(True)
         self.setFocusPolicy(Qt.WheelFocus)
         self.verified = False
+        self.label = False
 
     def setDrawingColor(self, qColor):
         self.drawingLineColor = qColor

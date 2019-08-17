@@ -227,13 +227,24 @@ class MainWindow(QMainWindow, WindowMixin):
                                 'Ctrl+Shift+O', 'open', u'Open Annotation')
 
         openNextImg = action('&Next Image', self.openNextImg,
-                             'd', 'next', u'Open Next')
+                             'f', 'next', u'Open Next')
 
         openPrevImg = action('&Prev Image', self.openPrevImg,
-                             'a', 'prev', u'Open Prev')
+                             'd', 'prev', u'Open Prev')
 
-        verify = action('&Verify Image', self.verifyImg,
-                        'space', 'verify', u'Verify Image')
+        verify = action('&Verify Image', self.verifyImg, 'a', 'verify', u'Verify Image')
+
+        #action("button text", function, 'shortcut', icon??, 'annotation text')
+        class0 = action('&Class0', self.class0, '0', 'Class0', u'Class 0')
+        class1 = action('&Class1', self.class1, '1', 'Class1', u'Class 1')
+        class2 = action('&Class2', self.class2, '2', 'Class2', u'Class 2')
+        class3 = action('&Class3', self.class3, '3', 'Class3', u'Class 3')
+        class4 = action('&Class4', self.class4, '4', 'Class4', u'Class 4')
+        class5 = action('&Class5', self.class5, '5', 'Class5', u'Class 5')
+        class6 = action('&Class6', self.class6, '6', 'Class6', u'Class 6')
+        class7 = action('&Class7', self.class7, '7', 'Class7', u'Class 7')
+        class8 = action('&Class8', self.class8, '8', 'Class8', u'Class 8')
+        class9 = action('&Class9', self.class9, '9', 'Class9', u'Class 9')
 
         save = action('&Save', self.saveFile,
                       'Ctrl+S', 'save', u'Save labels to file', enabled=False)
@@ -252,14 +263,14 @@ class MainWindow(QMainWindow, WindowMixin):
                         'Ctrl+L', 'color_line', u'Choose Box line color')
 
         createMode = action('Create\nRectBox', self.setCreateMode,
-                            'w', 'new', u'Start drawing Boxs', enabled=False)
+                            'space', 'new', u'Start drawing Boxs', enabled=False)
         editMode = action('&Edit\nRectBox', self.setEditMode,
                           'Ctrl+J', 'edit', u'Move and edit Boxs', enabled=False)
 
         create = action('Create\nRectBox', self.createShape,
-                        'w', 'new', u'Draw a new Box', enabled=False)
+                        'space', 'new', u'Draw a new Box', enabled=False)
         delete = action('Delete\nRectBox', self.deleteSelectedShape,
-                        'Delete', 'delete', u'Delete', enabled=False)
+                        'Backspace', 'delete', u'Delete', enabled=False)
         copy = action('&Duplicate\nRectBox', self.copySelectedShape,
                       'Ctrl+D', 'copy', u'Create a duplicate of the selected Box',
                       enabled=False)
@@ -378,7 +389,11 @@ class MainWindow(QMainWindow, WindowMixin):
         self.paintLabelsOption.triggered.connect(self.togglePaintLabelsOption)
 
         addActions(self.menus.file,
-                   (open, opendir, changeSavedir, openAnnotation, self.menus.recentFiles, save, save_format, saveAs, close, resetAll, quit))
+                   (open, opendir, changeSavedir, openAnnotation,
+                   self.menus.recentFiles, save, save_format, saveAs, close,
+                   class0, class1, class2, class3, class4, 
+                   class5, class6, class7, class8, class9, 
+                   resetAll, quit))
         addActions(self.menus.help, (help, showInfo))
         addActions(self.menus.view, (
             self.autoSaving,
@@ -400,10 +415,14 @@ class MainWindow(QMainWindow, WindowMixin):
         self.tools = self.toolbar('Tools')
         self.actions.beginner = (
             open, opendir, changeSavedir, openNextImg, openPrevImg, verify, save, save_format, None, create, copy, delete, None,
+            #class0, class1, class2, class3, class4, 
+            #class5, class6, class7, class8, class9, 
             zoomIn, zoom, zoomOut, fitWindow, fitWidth)
 
         self.actions.advanced = (
             open, opendir, changeSavedir, openNextImg, openPrevImg, save, save_format, None,
+            #class0, class1, class2, class3, class4, 
+            #class5, class6, class7, class8, class9, 
             createMode, editMode, None,
             hideAll, showAll)
 
@@ -765,6 +784,7 @@ class MainWindow(QMainWindow, WindowMixin):
         if self.labelFile is None:
             self.labelFile = LabelFile()
             self.labelFile.verified = self.canvas.verified
+            self.labelFile.label = self.canvas.label
 
         def format_shape(s):
             return dict(label=s.label,
@@ -976,12 +996,14 @@ class MainWindow(QMainWindow, WindowMixin):
                 self.lineColor = QColor(*self.labelFile.lineColor)
                 self.fillColor = QColor(*self.labelFile.fillColor)
                 self.canvas.verified = self.labelFile.verified
+                self.canvas.label = self.labelFile.label
             else:
                 # Load image:
                 # read data first and store for saving into label file.
                 self.imageData = read(unicodeFilePath, None)
                 self.labelFile = None
                 self.canvas.verified = False
+                self.canvas.label = None
 
             image = QImage.fromData(self.imageData)
             if image.isNull():
@@ -1196,8 +1218,209 @@ class MainWindow(QMainWindow, WindowMixin):
                     return
 
             self.canvas.verified = self.labelFile.verified
+            self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
+
+    def class0(self, _value=False):
+        # Proceding next image without dialog if having any label
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '0')
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("0")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("0")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [0]')
+
+    def class1(self, _value=False):
+        # Proceding next image without dialog if having any label
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '1')
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("1")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("1")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [1]')
+
+    def class2(self, _value=False):
+        # Proceding next image without dialog if having any label
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '2')
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("2")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("2")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [2]')
+
+    def class3(self, _value=False):
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '3')
+        # Proceding next image without dialog if having any label
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("3")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("3")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [3]')
+
+    def class4(self, _value=False):
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '4')
+        # Proceding next image without dialog if having any label
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("4")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("4")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [4]')
+
+    def class5(self, _value=False):
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '5')
+        # Proceding next image without dialog if having any label
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("5")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("5")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [5]')
+
+    def class6(self, _value=False):
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '6')
+        # Proceding next image without dialog if having any label
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("6")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("6")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [6]')
+
+    def class7(self, _value=False):
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '7')
+        # Proceding next image without dialog if having any label
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("7")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("7")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [7]')
+
+    def class8(self, _value=False):
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '8')
+        # Proceding next image without dialog if having any label
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("8")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("8")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [8]')
+
+    def class9(self, _value=False):
+         #print ('Img: ' + self.filePath + ' -> Its class: ' + '9')
+        # Proceding next image without dialog if having any label
+         if self.filePath is not None:
+            try:
+                self.labelFile.setClass("9")
+            except AttributeError:
+                # If the labelling file does not exist yet, create if and
+                # re-save it with the verified attribute.
+                self.saveFile()
+                if self.labelFile != None:
+                    self.labelFile.setClass("9")
+                else:
+                    return
+
+            self.canvas.label = self.labelFile.label
+            self.paintCanvas()
+            self.saveFile()
+            self.setWindowTitle(__appname__ + ' [9]')
 
     def openPrevImg(self, _value=False):
         # Proceding prev image without dialog if having any label
@@ -1397,6 +1620,7 @@ class MainWindow(QMainWindow, WindowMixin):
         shapes = tVocParseReader.getShapes()
         self.loadLabels(shapes)
         self.canvas.verified = tVocParseReader.verified
+        self.canvas.label = tVocParseReader.label
 
     def loadYOLOTXTByFilename(self, txtPath):
         if self.filePath is None:
@@ -1410,6 +1634,7 @@ class MainWindow(QMainWindow, WindowMixin):
         print (shapes)
         self.loadLabels(shapes)
         self.canvas.verified = tYoloParseReader.verified
+        self.canvas.label = tYoloParseReader.label
 
     def togglePaintLabelsOption(self):
         paintLabelsOptionChecked = self.paintLabelsOption.isChecked()

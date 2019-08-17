@@ -20,6 +20,7 @@ class YOLOWriter:
         self.boxlist = []
         self.localImgPath = localImgPath
         self.verified = False
+        self.label = None
 
     def addBndBox(self, xmin, ymin, xmax, ymax, name, difficult):
         bndbox = {'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax}
@@ -102,6 +103,7 @@ class YoloReader:
         self.imgSize = imgSize
 
         self.verified = False
+        self.label = None
         # try:
         self.parseYoloFormat()
         # except:
