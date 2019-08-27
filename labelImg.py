@@ -152,6 +152,18 @@ class MainWindow(QMainWindow, WindowMixin):
         listLayout.addWidget(self.diffcButton)
         listLayout.addWidget(useDefaultLabelContainer)
 
+        # Create a widget for showing current class 
+        self.classList = QListWidget()
+        #classListContainer = QWidget()
+        #classListContainer.setLayout(listLayout)
+        #self.classList.itemActivated.connect(self.labelSelectionChanged)
+        #self.classList.itemSelectionChanged.connect(self.labelSelectionChanged)
+        #self.classList.itemDoubleClicked.connect(self.editLabel)
+
+        # Connect to itemChanged to detect checkbox changes.
+        #self.classList.itemChanged.connect(self.labelItemChanged)
+        listLayout.addWidget(self.classList)
+
         # Create and add a widget for showing current label items
         self.labelList = QListWidget()
         labelListContainer = QWidget()
@@ -298,11 +310,11 @@ class MainWindow(QMainWindow, WindowMixin):
         self.zoomWidget.setEnabled(False)
 
         zoomIn = action('Zoom &In', partial(self.addZoom, 10),
-                        'Ctrl++', 'zoom-in', u'Increase zoom level', enabled=False)
+                        '.', 'zoom-in', u'Increase zoom level', enabled=False)
         zoomOut = action('&Zoom Out', partial(self.addZoom, -10),
-                         'Ctrl+-', 'zoom-out', u'Decrease zoom level', enabled=False)
+                         ',', 'zoom-out', u'Decrease zoom level', enabled=False)
         zoomOrg = action('&Original size', partial(self.setZoom, 100),
-                         'Ctrl+=', 'zoom', u'Zoom to original size', enabled=False)
+                         '=', 'zoom', u'Zoom to original size', enabled=False)
         fitWindow = action('&Fit Window', self.setFitWindow,
                            'Ctrl+F', 'fit-window', u'Zoom follows window size',
                            checkable=True, enabled=False)
@@ -336,7 +348,7 @@ class MainWindow(QMainWindow, WindowMixin):
         labels.setText('Show/Hide Label Panel')
         labels.setShortcut('Ctrl+Shift+L')
 
-        # Lavel list context menu.
+        # Label list context menu.
         labelMenu = QMenu()
         addActions(labelMenu, (edit, delete))
         self.labelList.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -1240,7 +1252,8 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [0]')
+            self.classList.clear()
+            self.classList.addItem("0")
 
     def class1(self, _value=False):
         # Proceding next image without dialog if having any label
@@ -1260,7 +1273,9 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [1]')
+            self.classList.clear()
+            self.classList.addItem("1")
+
 
     def class2(self, _value=False):
         # Proceding next image without dialog if having any label
@@ -1280,7 +1295,9 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [2]')
+            self.classList.clear()
+            self.classList.addItem("2")
+
 
     def class3(self, _value=False):
          #print ('Img: ' + self.filePath + ' -> Its class: ' + '3')
@@ -1300,7 +1317,9 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [3]')
+            self.classList.clear()
+            self.classList.addItem("3")
+
 
     def class4(self, _value=False):
          #print ('Img: ' + self.filePath + ' -> Its class: ' + '4')
@@ -1320,7 +1339,9 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [4]')
+            self.classList.clear()
+            self.classList.addItem("4")
+
 
     def class5(self, _value=False):
          #print ('Img: ' + self.filePath + ' -> Its class: ' + '5')
@@ -1340,7 +1361,9 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [5]')
+            self.classList.clear()
+            self.classList.addItem("5")
+
 
     def class6(self, _value=False):
          #print ('Img: ' + self.filePath + ' -> Its class: ' + '6')
@@ -1360,7 +1383,9 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [6]')
+            self.classList.clear()
+            self.classList.addItem("6")
+
 
     def class7(self, _value=False):
          #print ('Img: ' + self.filePath + ' -> Its class: ' + '7')
@@ -1380,7 +1405,9 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [7]')
+            self.classList.clear()
+            self.classList.addItem("7")
+
 
     def class8(self, _value=False):
          #print ('Img: ' + self.filePath + ' -> Its class: ' + '8')
@@ -1400,7 +1427,9 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [8]')
+            self.classList.clear()
+            self.classList.addItem("8")
+
 
     def class9(self, _value=False):
          #print ('Img: ' + self.filePath + ' -> Its class: ' + '9')
@@ -1420,7 +1449,9 @@ class MainWindow(QMainWindow, WindowMixin):
             self.canvas.label = self.labelFile.label
             self.paintCanvas()
             self.saveFile()
-            self.setWindowTitle(__appname__ + ' [9]')
+            self.classList.clear()
+            self.classList.addItem("9")
+
 
     def openPrevImg(self, _value=False):
         # Proceding prev image without dialog if having any label
