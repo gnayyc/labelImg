@@ -19,7 +19,7 @@ class PascalVocWriter:
         self.boxlist = []
         self.localImgPath = localImgPath
         self.verified = False
-        self.label = None
+        self.class_ = None
 
     def prettify(self, elem):
         """
@@ -46,9 +46,9 @@ class PascalVocWriter:
         if self.verified:
             top.set('verified', 'yes')
 
-        if self.label is not None:
-            classes = SubElement(top, 'class')
-            classes.text = self.label
+        if self.class_ is not None:
+            class_ = SubElement(top, 'class')
+            class_.text = self.class_
 
         folder = SubElement(top, 'folder')
         folder.text = self.foldername
@@ -138,7 +138,7 @@ class PascalVocReader:
         self.shapes = []
         self.filepath = filepath
         self.verified = False
-        self.label = None
+        self.class_ = None
         try:
             self.parseXML()
         except:
@@ -168,10 +168,10 @@ class PascalVocReader:
             self.verified = False
 
         try:
-            label = xmltree.attrib['label']
-            self.label = label
+            class_ = xmltree.find('class').text
+            self.class_ = class_
         except KeyError:
-            self.label = None
+            self.class_ = None
 
         for object_iter in xmltree.findall('object'):
             bndbox = object_iter.find("bndbox")
