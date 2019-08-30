@@ -170,7 +170,7 @@ class PascalVocReader:
         try:
             class_ = xmltree.find('class').text
             self.class_ = class_
-        except KeyError:
+        except AttributeError:
             self.class_ = None
 
         for object_iter in xmltree.findall('object'):
