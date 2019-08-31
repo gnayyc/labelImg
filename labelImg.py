@@ -1065,7 +1065,9 @@ class MainWindow(QMainWindow, WindowMixin):
                 elif os.path.isfile(txtPath):
                     self.loadYOLOTXTByFilename(txtPath)
 
-            self.setWindowTitle(__appname__ + ' ' + filePath)
+            #self.setWindowTitle(__appname__ + "/" + filePath)
+            self.setWindowTitle('[' + str(self.mImgList.index(self.filePath)+1) +
+            "/" + str(len(self.mImgList)) + "] " + filePath)
 
             # Default : select last item if there is at least one item
             #if self.labelList.count():
