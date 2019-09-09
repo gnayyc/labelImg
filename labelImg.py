@@ -275,12 +275,12 @@ class MainWindow(QMainWindow, WindowMixin):
                         'Ctrl+L', 'color_line', u'Choose Box line color')
 
         createMode = action('Create\nRectBox', self.setCreateMode,
-                            'space', 'new', u'Start drawing Boxs', enabled=False)
+                            'r', 'new', u'Start drawing Boxs', enabled=False)
         editMode = action('&Edit\nRectBox', self.setEditMode,
                           'Ctrl+J', 'edit', u'Move and edit Boxs', enabled=False)
 
         create = action('Create\nRectBox', self.createShape,
-                        'space', 'new', u'Draw a new Box', enabled=False)
+                        'r', 'new', u'Draw a new Box', enabled=False)
         delete = action('Delete\nRectBox', self.deleteSelectedShape,
                         'Backspace', 'delete', u'Delete', enabled=False)
         copy = action('&Duplicate\nRectBox', self.copySelectedShape,
@@ -594,6 +594,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.itemsToShapes.clear()
         self.shapesToItems.clear()
         self.labelList.clear()
+        self.classList.clear()
         self.filePath = None
         self.imageData = None
         self.labelFile = None
@@ -794,7 +795,8 @@ class MainWindow(QMainWindow, WindowMixin):
     def loadClass(self, class_):
         self.canvas.class_ = class_
         self.classList.clear()
-        self.classList.addItem(self.canvas.class_)
+        if class_ is not None:
+            self.classList.addItem(self.canvas.class_)
 
     def saveLabels(self, annotationFilePath):
         annotationFilePath = ustr(annotationFilePath)
