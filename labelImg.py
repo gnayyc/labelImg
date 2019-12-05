@@ -122,7 +122,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Main widgets and related state.
         self.labelDialog = LabelDialog(parent=self, listItem=self.labelHist)
-        self.classDialog = LabelDialog(parent=self, listItem=self.labelHist)
+        self.classDialog = LabelDialog(parent=self, text="Set Class", listItem=self.labelHist)
 
         self.itemsToShapes = {}
         self.shapesToItems = {}
@@ -288,6 +288,8 @@ class MainWindow(QMainWindow, WindowMixin):
                       'Ctrl+D', 'copy', u'Create a duplicate of the selected Box',
                       enabled=False)
 
+        editClass = action('&EditClass', self.editClass, 'c', 'editClass', u'Edit Class')
+
         advancedMode = action('&Advanced Mode', self.toggleAdvancedMode,
                               'Ctrl+Shift+A', 'expert', u'Switch to advanced mode',
                               checkable=True)
@@ -406,7 +408,7 @@ class MainWindow(QMainWindow, WindowMixin):
                    self.menus.recentFiles, save, save_format, saveAs, close,
                    class0, class1, class2, class3, class4, 
                    class5, class6, class7, class8, class9, 
-                   resetAll, quit))
+                   editClass, resetAll, quit))
         addActions(self.menus.help, (help, showInfo))
         addActions(self.menus.view, (
             self.autoSaving,
@@ -690,9 +692,12 @@ class MainWindow(QMainWindow, WindowMixin):
     def editClass(self):
         if not self.canvas.editing():
             return
-        text = self.labelClass.popUp("")
+        class_ = ''
+        if self.canvas.class_ is not None:
+            class_ = self.canvas.class_
+        text = self.classDialog.popUp(class_)
         if text is not None:
-            self.setClass(text)
+            self.setClass(ustr(text))
 
     def editLabel(self):
         if not self.canvas.editing():
