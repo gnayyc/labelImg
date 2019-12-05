@@ -122,6 +122,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Main widgets and related state.
         self.labelDialog = LabelDialog(parent=self, listItem=self.labelHist)
+        self.classDialog = LabelDialog(parent=self, listItem=self.labelHist)
 
         self.itemsToShapes = {}
         self.shapesToItems = {}
@@ -247,16 +248,16 @@ class MainWindow(QMainWindow, WindowMixin):
         verify = action('&Verify Image', self.verifyImg, 'a', 'verify', u'Verify Image')
 
         #action("button text", function, 'shortcut', icon??, 'annotation text')
-        class0 = action('&Class0', self.class0, '0', 'Class0', u'Class 0')
-        class1 = action('&Class1', self.class1, '1', 'Class1', u'Class 1')
-        class2 = action('&Class2', self.class2, '2', 'Class2', u'Class 2')
-        class3 = action('&Class3', self.class3, '3', 'Class3', u'Class 3')
-        class4 = action('&Class4', self.class4, '4', 'Class4', u'Class 4')
-        class5 = action('&Class5', self.class5, '5', 'Class5', u'Class 5')
-        class6 = action('&Class6', self.class6, '6', 'Class6', u'Class 6')
-        class7 = action('&Class7', self.class7, '7', 'Class7', u'Class 7')
-        class8 = action('&Class8', self.class8, '8', 'Class8', u'Class 8')
-        class9 = action('&Class9', self.class9, '9', 'Class9', u'Class 9')
+        class0 = action('&Class0', partial(self.setClass, "0"), '0', 'Class0', u'Class 0')
+        class1 = action('&Class1', partial(self.setClass, "1"), '1', 'Class1', u'Class 1')
+        class2 = action('&Class2', partial(self.setClass, "2"), '2', 'Class2', u'Class 2')
+        class3 = action('&Class3', partial(self.setClass, "3"), '3', 'Class3', u'Class 3')
+        class4 = action('&Class4', partial(self.setClass, "4"), '4', 'Class4', u'Class 4')
+        class5 = action('&Class5', partial(self.setClass, "5"), '5', 'Class5', u'Class 5')
+        class6 = action('&Class6', partial(self.setClass, "6"), '6', 'Class6', u'Class 6')
+        class7 = action('&Class7', partial(self.setClass, "7"), '7', 'Class7', u'Class 7')
+        class8 = action('&Class8', partial(self.setClass, "8"), '8', 'Class8', u'Class 8')
+        class9 = action('&Class9', partial(self.setClass, "9"), '9', 'Class9', u'Class 9')
 
         save = action('&Save', self.saveFile,
                       'Ctrl+S', 'save', u'Save labels to file', enabled=False)
@@ -685,6 +686,13 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def popLabelListMenu(self, point):
         self.menus.labelList.exec_(self.labelList.mapToGlobal(point))
+
+    def editClass(self):
+        if not self.canvas.editing():
+            return
+        text = self.labelClass.popUp("")
+        if text is not None:
+            self.setClass(text)
 
     def editLabel(self):
         if not self.canvas.editing():
@@ -1244,9 +1252,11 @@ class MainWindow(QMainWindow, WindowMixin):
             self.paintCanvas()
             self.saveFile()
 
-    def class0(self, _value=False):
-         self.canvas.class_ = "0"
-         if self.filePath is not None:
+    def setClass(self, class_ = None):
+        if class_ is None:
+            return
+        self.canvas.class_ = class_
+        if self.filePath is not None:
             try:
                 self.labelFile.setClass(self.canvas.class_)
             except AttributeError:
@@ -1258,185 +1268,6 @@ class MainWindow(QMainWindow, WindowMixin):
                 else:
                     return
 
-            self.paintCanvas()
-            self.saveFile()
-            self.classList.clear()
-            self.classList.addItem(self.canvas.class_)
-
-    def class1(self, _value=False):
-         self.canvas.class_ = "1"
-         if self.filePath is not None:
-            try:
-                self.labelFile.setClass(self.canvas.class_)
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.setClass(self.canvas.class_)
-                else:
-                    return
-
-            self.paintCanvas()
-            self.saveFile()
-            self.classList.clear()
-            self.classList.addItem(self.canvas.class_)
-
-    def class2(self, _value=False):
-         self.canvas.class_ = "2"
-         if self.filePath is not None:
-            try:
-                self.labelFile.setClass(self.canvas.class_)
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.setClass(self.canvas.class_)
-                else:
-                    return
-
-            #self.canvas.class_ = self.labelFile.class_
-            self.paintCanvas()
-            self.saveFile()
-            self.classList.clear()
-            self.classList.addItem(self.canvas.class_)
-
-    def class3(self, _value=False):
-         self.canvas.class_ = "3"
-         if self.filePath is not None:
-            try:
-                self.labelFile.setClass(self.canvas.class_)
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.setClass(self.canvas.class_)
-                else:
-                    return
-
-            #self.canvas.class_ = self.labelFile.class_
-            self.paintCanvas()
-            self.saveFile()
-            self.classList.clear()
-            self.classList.addItem(self.canvas.class_)
-
-    def class4(self, _value=False):
-         self.canvas.class_ = "4"
-         if self.filePath is not None:
-            try:
-                self.labelFile.setClass(self.canvas.class_)
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.setClass(self.canvas.class_)
-                else:
-                    return
-
-            #self.canvas.class_ = self.labelFile.class_
-            self.paintCanvas()
-            self.saveFile()
-            self.classList.clear()
-            self.classList.addItem(self.canvas.class_)
-
-    def class5(self, _value=False):
-         self.canvas.class_ = "5"
-         if self.filePath is not None:
-            try:
-                self.labelFile.setClass(self.canvas.class_)
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.setClass(self.canvas.class_)
-                else:
-                    return
-
-            #self.canvas.class_ = self.labelFile.class_
-            self.paintCanvas()
-            self.saveFile()
-            self.classList.clear()
-            self.classList.addItem(self.canvas.class_)
-
-    def class6(self, _value=False):
-         self.canvas.class_ = "6"
-         if self.filePath is not None:
-            try:
-                self.labelFile.setClass(self.canvas.class_)
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.setClass(self.canvas.class_)
-                else:
-                    return
-
-            #self.canvas.class_ = self.labelFile.class_
-            self.paintCanvas()
-            self.saveFile()
-            self.classList.clear()
-            self.classList.addItem(self.canvas.class_)
-
-    def class7(self, _value=False):
-         self.canvas.class_ = "7"
-         if self.filePath is not None:
-            try:
-                self.labelFile.setClass(self.canvas.class_)
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.setClass(self.canvas.class_)
-                else:
-                    return
-
-            #self.canvas.class_ = self.labelFile.class_
-            self.paintCanvas()
-            self.saveFile()
-            self.classList.clear()
-            self.classList.addItem(self.canvas.class_)
-
-    def class8(self, _value=False):
-         self.canvas.class_ = "8"
-         if self.filePath is not None:
-            try:
-                self.labelFile.setClass(self.canvas.class_)
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.setClass(self.canvas.class_)
-                else:
-                    return
-
-            #self.canvas.class_ = self.labelFile.class_
-            self.paintCanvas()
-            self.saveFile()
-            self.classList.clear()
-            self.classList.addItem(self.canvas.class_)
-
-    def class9(self, _value=False):
-         self.canvas.class_ = "9"
-         if self.filePath is not None:
-            try:
-                self.labelFile.setClass(self.canvas.class_)
-            except AttributeError:
-                # If the labelling file does not exist yet, create if and
-                # re-save it with the verified attribute.
-                self.saveFile()
-                if self.labelFile != None:
-                    self.labelFile.setClass(self.canvas.class_)
-                else:
-                    return
-
-            #self.canvas.class_ = self.labelFile.class_
             self.paintCanvas()
             self.saveFile()
             self.classList.clear()
