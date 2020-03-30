@@ -288,7 +288,7 @@ class MainWindow(QMainWindow, WindowMixin):
                       'Ctrl+D', 'copy', u'Create a duplicate of the selected Box',
                       enabled=False)
 
-        editClass = action('&EditClass', self.editClass, 'c', 'editClass', u'Edit Class')
+        editClass = action('&EditClass', self.editClass, 'e', 'editClass', u'Edit Class')
 
         advancedMode = action('&Advanced Mode', self.toggleAdvancedMode,
                               'Ctrl+Shift+A', 'expert', u'Switch to advanced mode',
@@ -312,12 +312,12 @@ class MainWindow(QMainWindow, WindowMixin):
                                              fmtShortcut("Ctrl+Wheel")))
         self.zoomWidget.setEnabled(False)
 
-        zoomIn = action('Zoom &In', partial(self.addZoom, 10),
-                        '.', 'zoom-in', u'Increase zoom level', enabled=False)
-        zoomOut = action('&Zoom Out', partial(self.addZoom, -10),
-                         ',', 'zoom-out', u'Decrease zoom level', enabled=False)
+        zoomIn = action('Zoom &In', partial(self.addZoom, 30),
+                        'c', 'zoom-in', u'Increase zoom level', enabled=False)
+        zoomOut = action('&Zoom Out', partial(self.addZoom, -30),
+                         'x', 'zoom-out', u'Decrease zoom level', enabled=False)
         zoomOrg = action('&Original size', partial(self.setZoom, 100),
-                         '=', 'zoom', u'Zoom to original size', enabled=False)
+                         'z', 'zoom', u'Zoom to original size', enabled=False)
         fitWindow = action('&Fit Window', self.setFitWindow,
                            'Ctrl+F', 'fit-window', u'Zoom follows window size',
                            checkable=True, enabled=False)
